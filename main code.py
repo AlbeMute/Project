@@ -2,18 +2,22 @@ import os
 import sys
 from PyQt5.QtCore import Qt
 import pandas as pd
+import numpy as np
 import Ui_interface
 from Ui_color import Ui_Dialog
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
 import pyqtgraph as pg
 from PyQt5 import QtWidgets, QtCore
+from PyQt5.QtGui import QIcon
+
 
 class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
         self.directory = os.getcwd()
+        self.setWindowIcon(QIcon('AlbeMute.ico'))
         self.data = None
         self.setWindowTitle('AlbeMute')
         
@@ -76,20 +80,63 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
     def set_DashDotLine(self):
         self.line_style = QtCore.Qt.DashDotLine
 
-    
+    def plot_the_chart(self):
+        function_text = self.lineEdit.text() 
 
-    def open_new_transaction_window(self):
-        self.new_window = QtWidgets.QDialog()
-        self.ui_window = Ui_Dialog()
-        self.ui_window.setupUi(self.new_window)
-        self.new_window.show()
+        try:
+            xmin = float(self.lineEdit_2.text())
+            xmax = float(self.lineEdit_3.text())
+        except ValueError:
+            QMessageBox.warning(self, "Ошибка", "Неверно заданы Xmin или Xmax.")
+            return
 
-class  TransactionWindow(QDialog, Ui_Dialog, Ui_interface.Ui_MainWindow):
-      def __init__(self):
-            super().__init__()
-            self.pushButton_10.clicked.connect(lambda: self.set_red())
-      def set_red(self):
-            self.pushButton_10.setStyleSheet("background-color: red;")
+        if not function_text.strip():
+            QMessageBox.warning(self, "Ошибка", "Поле ввода функции пусто.")
+            return
+
+        x = np.linspace(xmin, xmax, 1000) 
+
+        try:
+            y = eval("lambda x: " + function_text, {"np": np, "__builtins__": None}, {})(x)
+        except Exception as e:
+            QMessageBox.warning(self, "Ошибка", f"Ошибка в вычислении функции: {e}")
+            return
+
+        
+        pen = pg.mkPen(color=(np.random.randint(0, 255), np.random.randint(0, 255), np.random.randint(0, 255)), style=self.line_style, width=2)
+
+        self.graphicsView.plot(x, y, pen=pen, name=function_text) 
+
+
+
+
+        
+def main():
+  app = QtWidgets.QApplication(sys.argv)
+  window = MainApplication()
+  window.show()
+  app.exec_()
+
+
+if __name__ == '__main__':
+  main()  
+        
+
+        
+        
+
+#     def open_new_transaction_window(self):
+#         self.new_window = QtWidgets.QDialog()
+#         self.ui_window = Ui_Dialog()
+#         self.ui_window.setupUi(self.new_window)
+#         self.new_window.show()
+
+# class  TransactionWindow(QDialog, Ui_Dialog, Ui_interface.Ui_MainWindow):
+#       def __init__(self):
+#             super().__init__()
+#             self.pushButton_10.clicked.connect(lambda: self.set_red())
+#       def set_red(self):
+#             self.pushButton_10.setStyleSheet("background-color: red;")
 
         
         
@@ -103,12 +150,3 @@ class  TransactionWindow(QDialog, Ui_Dialog, Ui_interface.Ui_MainWindow):
         
 
 
-def main():
-  app = QtWidgets.QApplication(sys.argv)
-  window = MainApplication()
-  window.show()
-  app.exec_()
-
-
-if __name__ == '__main__':
-  main()
