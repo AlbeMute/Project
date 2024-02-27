@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>308</width>
-    <height>164</height>
+    <height>166</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -234,6 +234,8 @@ image: url(:/newPrefix/green-circle-svgrepo-com.svg);</string>
            <property name="styleSheet">
             <string notr="true">
 image: url(:/newPrefix/red-circle-svgrepo-com.svg);
+
+ 
 </string>
            </property>
            <property name="text">

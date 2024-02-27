@@ -10,6 +10,8 @@ from PyQt5.QtWidgets import *
 import pyqtgraph as pg
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import pyqtSignal
+
 
 
 class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
@@ -55,12 +57,8 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
     def background_color_w(self):
         self.graphicsView.setBackground((255, 255,  255))
     
-    def clear(self):
-        self.graphicsView.removeItem(self.lst_item_xlsx[0])
-        self.lst_item_xlsx.pop(0)
-    def clear_all(self):
-        self.graphicsView.clear()
-        self.lst_item_func.clear()
+    # def clear(self):
+
     
     def set_crosshair(self):
         self.marker = 'crosshair'
@@ -94,21 +92,59 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
             QMessageBox.warning(self, "Ошибка", "Поле ввода функции пусто.")
             return
 
-        x = np.linspace(xmin, xmax, 1000) 
+        x = np.linspace(xmin, xmax, 500) 
 
         try:
             y = eval("lambda x: " + function_text, {"np": np, "__builtins__": None}, {})(x)
+            pen = pg.mkPen(color=self.selectedColor, style=self.line_style, width=2)
+            self.graphicsView.plot(x, y, pen=pen, name=function_text) 
+
         except Exception as e:
             QMessageBox.warning(self, "Ошибка", f"Ошибка в вычислении функции: {e}")
             return
 
         
-        pen = pg.mkPen(color=(np.random.randint(0, 255), np.random.randint(0, 255), np.random.randint(0, 255)), style=self.line_style, width=2)
 
-        self.graphicsView.plot(x, y, pen=pen, name=function_text) 
+    def open_new_transaction_window(self):
+        self.new_window = TransactionWindow()
+        self.new_window.colorChanged.connect(self.apply_color_to_plot)
+        self.new_window.show()
+    
+    def apply_color_to_plot(self, color):
+        self.selectedColor = color
+
+
+class TransactionWindow(QDialog, Ui_Dialog):
+    colorChanged = pyqtSignal(tuple)  
+    
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)  
+        self.pushButton_10.clicked.connect(lambda: self.emit_color("red"))
+        self.pushButton_11.clicked.connect(lambda: self.emit_color("green"))
+        self.pushButton_12.clicked.connect(lambda: self.emit_color("purple"))
+        self.pushButton_13.clicked.connect(lambda: self.emit_color("blue"))
+        self.pushButton_21.clicked.connect(lambda: self.emit_color("yellow"))
+        self.pushButton_20.clicked.connect(lambda: self.emit_color('orange'))
+        self.pushButton_19.clicked.connect(lambda: self.emit_color('dark_blue'))
+        self.pushButton_18.clicked.connect(lambda: self.emit_color('pink'))
 
 
 
+    def emit_color(self, color_name):
+        color_map = {
+            "red": (255, 0, 0),
+            "green": (0, 255, 0),
+            "purple": (128, 0, 128),
+            "blue": (0, 0, 255),
+            "yellow": (255, 255, 0),
+            'orange':  (255, 165 ,0),
+            'dark_blue' : (0, 0, 139),
+            'pink' : (255, 192, 203)
+
+        }
+        self.colorChanged.emit(color_map[color_name])
+    
 
         
 def main():
@@ -120,23 +156,12 @@ def main():
 
 if __name__ == '__main__':
   main()  
-        
+     
 
         
         
 
-#     def open_new_transaction_window(self):
-#         self.new_window = QtWidgets.QDialog()
-#         self.ui_window = Ui_Dialog()
-#         self.ui_window.setupUi(self.new_window)
-#         self.new_window.show()
 
-# class  TransactionWindow(QDialog, Ui_Dialog, Ui_interface.Ui_MainWindow):
-#       def __init__(self):
-#             super().__init__()
-#             self.pushButton_10.clicked.connect(lambda: self.set_red())
-#       def set_red(self):
-#             self.pushButton_10.setStyleSheet("background-color: red;")
 
         
         
