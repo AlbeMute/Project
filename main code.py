@@ -14,6 +14,11 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QMovie
 from PyQt5.QtWidgets import QLabel
 from PyQt5.QtCore import QTimer
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
+from PyQt5.QtMultimediaWidgets import QVideoWidget
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtCore import QUrl
+
 
 
 
@@ -22,10 +27,12 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+        self.initVideoPlayer()
         self.directory = os.getcwd()
-        self.setWindowIcon(QIcon('AlbeMute.ico'))
+        self.setWindowIcon(QIcon('AniGraphix.ico'))
+        self.setWindowIcon(QIcon('ico.png'))
         self.data = None
-        self.setWindowTitle('AlbeMute')
+        self.setWindowTitle('AniGraphix')
         
         self.PLotWidget = pg.PlotWidget()
         self.graphicsView.setBackground((255, 255,  255))
@@ -36,6 +43,7 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
         self.line_style = QtCore.Qt.SolidLine
         self.graphicsView.showGrid(x=True, y=True, alpha = 1)
         self.graphicsView.addLegend()
+        self.plot_item_func = []        
         
         self.pushButton_4.clicked.connect(lambda: self.open_new_transaction_window())
         self.pushButton.clicked.connect(lambda: self.background_color_b())
@@ -43,7 +51,8 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
         self.pushButton_3.clicked.connect(lambda: self.background_anime_gif())
 
         self.pushButton_9.clicked.connect(lambda: self.plot_the_chart())
-        self.pushButton_14.clicked.connect(lambda: self.clear())
+        # self.pushButton_14.clicked.connect(lambda: self.clear())
+        self.pushButton_14.clicked.connect(lambda: self.playVideo())
         self.pushButton_15.clicked.connect(lambda: self.clear_all())
 
         self.pushButton_10.clicked.connect(lambda: self.set_crosshair())
@@ -77,16 +86,48 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
         self.labelForGif.setGeometry((self.width() - 640) // 2, (self.height() - 320) // 2, 640, 320)
         QTimer.singleShot(4000, self.labelForGif.hide)
         self.movie.start()
-   
-    
-    # def clear(self):
+
+        # self.initVideoPlayer()
         
+        self.playVideoButton = QPushButton("Play Video", self)
+        self.playVideoButton.setGeometry(750, 100, 100, 30)
+        self.playVideoButton.clicked.connect(self.playVideo)
+        
+    def initVideoPlayer(self):
+        self.videoWidget = QVideoWidget(self)
+        self.videoWidget.setGeometry(100, 100, 720, 720)
+        self.videoWidget.hide()
+
+        self.mediaPlayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
+        self.mediaPlayer.setVideoOutput(self.videoWidget)
+
+        videoPath = "anime_jumpscare.mp4"  
+        self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(videoPath)))
+
+    def playVideo(self):
+        if self.mediaPlayer.state() == QMediaPlayer.PlayingState:
+            self.mediaPlayer.pause()
+            self.videoWidget.hide()
+        else:
+            self.videoWidget.show()
+            self.mediaPlayer.play()
+        
+
+
+
+
+    # def clear(self):
+    #     if self.lst_item_func:
+    #         last_graph = self.lst_item_func.pop()  
+    #         self.graphicsView.removeItem(last_graph)  
+
+    
     def clear_all(self):
         self.graphicsView.clear()
         self.lst_item_func.clear()
         self.lst_item_xlsx.clear()
 
-    
+
     def set_crosshair(self):
         self.marker = 'crosshair'
     def set_square(self):
@@ -125,12 +166,13 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
             y = eval("lambda x: " + function_text, {"np": np, "__builtins__": None}, {})(x)
             pen = pg.mkPen(color=self.selectedColor, style=self.line_style, width=2)
             self.graphicsView.plot(x, y, pen=pen, name=function_text) 
+            self.lst_item_func.append(self.plot_item_func)
 
         except Exception as e:
             QMessageBox.warning(self, "Ошибка", f"Ошибка в вычислении функции: {e}")
-            return
+            return 
 
-        
+
 
     def open_new_transaction_window(self):
         self.new_window = TransactionWindow()
@@ -156,8 +198,8 @@ class TransactionWindow(QDialog, Ui_Dialog):
         self.pushButton_19.clicked.connect(lambda: self.emit_color('dark_blue'))
         self.pushButton_18.clicked.connect(lambda: self.emit_color('pink'))
 
-
-
+    
+    
     def emit_color(self, color_name):
         color_map = {
             "red": (255, 0, 0),
@@ -171,9 +213,9 @@ class TransactionWindow(QDialog, Ui_Dialog):
 
         }
         self.colorChanged.emit(color_map[color_name])
-    
 
-        
+
+
 def main():
   app = QtWidgets.QApplication(sys.argv)
   window = MainApplication()
