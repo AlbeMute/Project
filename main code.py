@@ -64,25 +64,20 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
 
     def background_anime_gif(self):
         self.labelForGif = QLabel(self)
-        # self.labelForGif.setAlignment(Qt.AlignCenter)
+        self.labelForGif.setAlignment(Qt.AlignCenter)
         self.layout().addWidget(self.labelForGif)
         gifPath = "gif_black.gif"
         self.movie = QMovie(gifPath)
         self.labelForGif.setMovie(self.movie)
-        self.labelForGif.resize(793, 560)  
+        self.labelForGif.resize(640, 320)  
         self.labelForGif.move(10, 10) 
 
         layout = QVBoxLayout()
         layout.addWidget(self.labelForGif)
-        self.labelForGif.setGeometry((self.width() - 640) // 2, (self.height() - 320560) // 2, 640, 320)
-        QTimer.singleShot(4100, self.labelForGif.hide)
+        self.labelForGif.setGeometry((self.width() - 640) // 2, (self.height() - 320) // 2, 640, 320)
+        QTimer.singleShot(4000, self.labelForGif.hide)
         self.movie.start()
-
-
-
-
-
-        
+   
     
     # def clear(self):
         
