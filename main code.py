@@ -11,6 +11,10 @@ import pyqtgraph as pg
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtGui import QMovie
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtCore import QTimer
+
 
 
 
@@ -36,6 +40,7 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
         self.pushButton_4.clicked.connect(lambda: self.open_new_transaction_window())
         self.pushButton.clicked.connect(lambda: self.background_color_b())
         self.pushButton_2.clicked.connect(lambda: self.background_color_w())
+        self.pushButton_3.clicked.connect(lambda: self.background_anime_gif())
 
         self.pushButton_9.clicked.connect(lambda: self.plot_the_chart())
         self.pushButton_14.clicked.connect(lambda: self.clear())
@@ -56,8 +61,35 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
         
     def background_color_w(self):
         self.graphicsView.setBackground((255, 255,  255))
+
+    def background_anime_gif(self):
+        self.labelForGif = QLabel(self)
+        # self.labelForGif.setAlignment(Qt.AlignCenter)
+        self.layout().addWidget(self.labelForGif)
+        gifPath = "gif_black.gif"
+        self.movie = QMovie(gifPath)
+        self.labelForGif.setMovie(self.movie)
+        self.labelForGif.resize(793, 560)  
+        self.labelForGif.move(10, 10) 
+
+        layout = QVBoxLayout()
+        layout.addWidget(self.labelForGif)
+        self.labelForGif.setGeometry((self.width() - 640) // 2, (self.height() - 320560) // 2, 640, 320)
+        QTimer.singleShot(4100, self.labelForGif.hide)
+        self.movie.start()
+
+
+
+
+
+        
     
     # def clear(self):
+        
+    def clear_all(self):
+        self.graphicsView.clear()
+        self.lst_item_func.clear()
+        self.lst_item_xlsx.clear()
 
     
     def set_crosshair(self):
