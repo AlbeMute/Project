@@ -5,7 +5,6 @@ import pandas as pd
 import numpy as np
 import Ui_interface
 from Ui_color import Ui_Dialog
-from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
 import pyqtgraph as pg
 from PyQt5 import QtWidgets, QtCore
@@ -14,10 +13,13 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QMovie
 from PyQt5.QtWidgets import QLabel
 from PyQt5.QtCore import QTimer
-from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
-from PyQt5.QtMultimediaWidgets import QVideoWidget
-from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtCore import QUrl
+# from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
+# from PyQt5.QtMultimediaWidgets import QVideoWidget
+# from PyQt5.QtWidgets import QPushButton
+# from PyQt5.QtCore import QUrl
+# from PyQt5.QtWidgets import QMainWindow, QApplication, QSlider
+# from Ui_interface import Ui_MainWindow
+
 
 
 
@@ -35,16 +37,19 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
         self.data = None
         self.setWindowTitle('AniGraphix')
         
+        self.userFunction = None
+        self.currentXRange = (0, 10)
+
         self.PLotWidget = pg.PlotWidget()
         self.graphicsView.setBackground((255, 255,  255))
         self.marker = 'o'
         self.color = 'b'
-        self.lst_item_func = []
+        # self.lst_item_func = []
         self.line_style = QtCore.Qt.SolidLine
         self.graphicsView.showGrid(x=True, y=True, alpha = 1)
         self.graphicsView.addLegend()
         self.plot_item_func = []
-        self.graphItems = []        
+        self.graphItems = []    
         
         self.pushButton_4.clicked.connect(lambda: self.open_new_transaction_window())
         self.pushButton.clicked.connect(lambda: self.background_color_b())
@@ -52,6 +57,7 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
         self.pushButton_3.clicked.connect(lambda: self.background_anime_gif())
 
         self.pushButton_9.clicked.connect(lambda: self.plot_the_chart())
+        self.horizontalSlider.valueChanged.connect(self.updateGraph)
         self.pushButton_14.clicked.connect(lambda: self.clear())
         # self.pushButton_14.clicked.connect(lambda: self.playVideo())
         self.pushButton_15.clicked.connect(lambda: self.clear_all())
@@ -65,7 +71,18 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
         self.pushButton_7.clicked.connect(lambda: self.set_DashLine())
         self.pushButton_6.clicked.connect(lambda: self.set_DotLine())
         self.pushButton_5.clicked.connect(lambda: self.set_DashDotLine())
-    
+
+   
+#------------------------------- Functions --------------------------
+        self.horizontalSlider.valueChanged.connect(self.updateGraph)
+
+        self.x = np.linspace(0, 10, 10)
+        self.y = np.sin(self.x)
+        self.updateGraph()
+
+       
+
+
     def background_color_b(self):
         self.graphicsView.setBackground((32, 29,  29))
         
@@ -113,14 +130,22 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
     #         self.mediaPlayer.play()
         
 
+    # def clear(self):
+    #     if self.graphItems:
+    #         last_graph = self.graphItems.pop()
+    #         self.graphicsView.removeItem(last_graph)
+        
     def clear(self):
         if self.graphItems:
-            last_graph = self.graphItems.pop()
-            self.graphicsView.removeItem(last_graph)
+            last_graph = self.graphItems.pop() 
+            self.graphicsView.removeItem(last_graph)  
+
+
     
     def clear_all(self):
         self.graphicsView.clear()
         self.lst_item_func.clear()
+
 
 
     def set_crosshair(self):
@@ -132,43 +157,107 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
     def set_circle(self):
         self.marker = 'o'  
     
+
+
+
     def set_SolidLine(self):
         self.line_style = QtCore.Qt.SolidLine
+        self.updateGraph()
     def set_DashLine(self):
         self.line_style = QtCore.Qt.DashLine
+        self.updateGraph()
     def set_DotLine(self):
         self.line_style = QtCore.Qt.DotLine
+        self.updateGraph()
     def set_DashDotLine(self):
         self.line_style = QtCore.Qt.DashDotLine
+        self.updateGraph()
+
+    # def plot_the_chart(self):
+    #     function_text = self.lineEdit.text() 
+
+    #     try:
+    #         xmin = float(self.lineEdit_2.text())
+    #         xmax = float(self.lineEdit_3.text())
+    #     except ValueError:
+    #         QMessageBox.warning(self, "Ошибка", "Неверно заданы Xmin или Xmax.")
+    #         return
+
+    #     if not function_text.strip():
+    #         QMessageBox.warning(self, "Ошибка", "Поле ввода функции пусто.")
+    #         return
+
+    #     x = np.linspace(xmin, xmax, 500) 
+
+    #     try:
+    #         y = eval("lambda x: " + function_text, {"np": np, "__builtins__": None}, {})(x)
+    #         pen = pg.mkPen(color=self.selectedColor, style=self.line_style, width=2)
+    #         # self.graphicsView.plot(x, y, pen=pen, name=function_text) 
+    #         graph_item = self.graphicsView.plot(x, y, pen=pen, name=function_text)
+    #         self.graphItems.append(graph_item)
+
+
+    #     except Exception as e:
+    #         QMessageBox.warning(self, "Ошибка", f"Ошибка в вычислении функции: {e}")
+    #         return 
 
     def plot_the_chart(self):
-        function_text = self.lineEdit.text() 
-
+        function_text = self.lineEdit.text()
         try:
-            xmin = float(self.lineEdit_2.text())
-            xmax = float(self.lineEdit_3.text())
-        except ValueError:
-            QMessageBox.warning(self, "Ошибка", "Неверно заданы Xmin или Xmax.")
-            return
-
-        if not function_text.strip():
-            QMessageBox.warning(self, "Ошибка", "Поле ввода функции пусто.")
-            return
-
-        x = np.linspace(xmin, xmax, 500) 
-
-        try:
-            y = eval("lambda x: " + function_text, {"np": np, "__builtins__": None}, {})(x)
-            pen = pg.mkPen(color=self.selectedColor, style=self.line_style, width=2)
-            # self.graphicsView.plot(x, y, pen=pen, name=function_text) 
-            graph_item = self.graphicsView.plot(x, y, pen=pen, name=function_text)
-            self.graphItems.append(graph_item)
-
-
+            self.userFunction = eval(f"lambda x: {function_text}", {"np": np})
+            self.currentXRange = (float(self.lineEdit_2.text()), float(self.lineEdit_3.text()))
+            self.updateGraph()  
         except Exception as e:
-            QMessageBox.warning(self, "Ошибка", f"Ошибка в вычислении функции: {e}")
-            return 
+            print(f"Ошибка: {e}")
 
+    def updateGraph(self):
+        if self.userFunction:
+            xmin, xmax = self.currentXRange
+            x = np.linspace(xmin, xmax, 1000)  # Или другое количество точек в зависимости от необходимости
+            y = self.userFunction(x)
+
+            # Очищаем предыдущий график
+            for item in self.graphItems:
+                self.graphicsView.removeItem(item)
+            self.graphItems.clear()
+
+            # Создаем и отрисовываем график линии
+            pen = pg.mkPen(color=self.selectedColor, style=self.line_style, width=2)
+            lineItem = self.graphicsView.plot(x, y, pen=pen)
+            self.graphItems.append(lineItem)
+
+            # Добавляем маркеры если их количество > 0
+            marker_count = self.horizontalSlider.value()
+            if marker_count > 0:
+                marker_interval = max(1, len(x) // marker_count)
+                x_markers = x[::marker_interval]
+                y_markers = y[::marker_interval]
+                # Для маркеров используем цвет self.selectedColor
+                markersItem = self.graphicsView.plot(x_markers, y_markers, pen=None, symbol=self.marker, symbolSize=5, symbolBrush='b')
+                self.graphItems.append(markersItem)
+
+
+
+
+
+
+
+    
+    def set_crosshair(self):
+        self.marker = '+' 
+        self.updateGraph()
+
+    def set_square(self):
+        self.marker = 's'
+        self.updateGraph()
+
+    def set_triangle(self):
+        self.marker = 't'
+        self.updateGraph()
+
+    def set_circle(self):
+        self.marker = 'o'
+        self.updateGraph()
 
 
     def open_new_transaction_window(self):
@@ -176,8 +265,9 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
         self.new_window.colorChanged.connect(self.apply_color_to_plot)
         self.new_window.show()
     
-    def apply_color_to_plot(self, color):
-        self.selectedColor = color
+    def apply_color_to_plot(self, rgb_color):
+        self.updateGraph()
+        self.selectedColor = pg.mkColor(rgb_color)
 
 
 class TransactionWindow(QDialog, Ui_Dialog):
