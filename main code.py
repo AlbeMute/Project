@@ -23,11 +23,12 @@ from PyQt5.QtCore import QUrl
 
 
 
+
 class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.initVideoPlayer()
+        # self.initVideoPlayer()
         self.directory = os.getcwd()
         self.setWindowIcon(QIcon('AniGraphix.ico'))
         self.setWindowIcon(QIcon('ico.png'))
@@ -39,11 +40,11 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
         self.marker = 'o'
         self.color = 'b'
         self.lst_item_func = []
-        self.lst_item_xlsx = []
         self.line_style = QtCore.Qt.SolidLine
         self.graphicsView.showGrid(x=True, y=True, alpha = 1)
         self.graphicsView.addLegend()
-        self.plot_item_func = []        
+        self.plot_item_func = []
+        self.graphItems = []        
         
         self.pushButton_4.clicked.connect(lambda: self.open_new_transaction_window())
         self.pushButton.clicked.connect(lambda: self.background_color_b())
@@ -51,8 +52,8 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
         self.pushButton_3.clicked.connect(lambda: self.background_anime_gif())
 
         self.pushButton_9.clicked.connect(lambda: self.plot_the_chart())
-        # self.pushButton_14.clicked.connect(lambda: self.clear())
-        self.pushButton_14.clicked.connect(lambda: self.playVideo())
+        self.pushButton_14.clicked.connect(lambda: self.clear())
+        # self.pushButton_14.clicked.connect(lambda: self.playVideo())
         self.pushButton_15.clicked.connect(lambda: self.clear_all())
 
         self.pushButton_10.clicked.connect(lambda: self.set_crosshair())
@@ -87,45 +88,39 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
         QTimer.singleShot(4000, self.labelForGif.hide)
         self.movie.start()
 
-        # self.initVideoPlayer()
         
-        self.playVideoButton = QPushButton("Play Video", self)
-        self.playVideoButton.setGeometry(750, 100, 100, 30)
-        self.playVideoButton.clicked.connect(self.playVideo)
+    #     self.playVideoButton = QPushButton("Play Video", self)
+    #     self.playVideoButton.setGeometry(750, 100, 100, 30)
+    #     self.playVideoButton.clicked.connect(self.playVideo)
         
-    def initVideoPlayer(self):
-        self.videoWidget = QVideoWidget(self)
-        self.videoWidget.setGeometry(100, 100, 720, 720)
-        self.videoWidget.hide()
+    # def initVideoPlayer(self):
+    #     self.videoWidget = QVideoWidget(self)
+    #     self.videoWidget.setGeometry(100, 100, 720, 720)
+    #     self.videoWidget.hide()
 
-        self.mediaPlayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
-        self.mediaPlayer.setVideoOutput(self.videoWidget)
+    #     self.mediaPlayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
+    #     self.mediaPlayer.setVideoOutput(self.videoWidget)
 
-        videoPath = "anime_jumpscare.mp4"  
-        self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(videoPath)))
+    #     videoPath = "anime_jumpscare.mp4"  
+    #     self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(videoPath)))
 
-    def playVideo(self):
-        if self.mediaPlayer.state() == QMediaPlayer.PlayingState:
-            self.mediaPlayer.pause()
-            self.videoWidget.hide()
-        else:
-            self.videoWidget.show()
-            self.mediaPlayer.play()
+    # def playVideo(self):
+    #     if self.mediaPlayer.state() == QMediaPlayer.PlayingState:
+    #         self.mediaPlayer.pause()
+    #         self.videoWidget.hide()
+    #     else:
+    #         self.videoWidget.show()
+    #         self.mediaPlayer.play()
         
 
-
-
-
-    # def clear(self):
-    #     if self.lst_item_func:
-    #         last_graph = self.lst_item_func.pop()  
-    #         self.graphicsView.removeItem(last_graph)  
-
+    def clear(self):
+        if self.graphItems:
+            last_graph = self.graphItems.pop()
+            self.graphicsView.removeItem(last_graph)
     
     def clear_all(self):
         self.graphicsView.clear()
         self.lst_item_func.clear()
-        self.lst_item_xlsx.clear()
 
 
     def set_crosshair(self):
@@ -165,8 +160,10 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
         try:
             y = eval("lambda x: " + function_text, {"np": np, "__builtins__": None}, {})(x)
             pen = pg.mkPen(color=self.selectedColor, style=self.line_style, width=2)
-            self.graphicsView.plot(x, y, pen=pen, name=function_text) 
-            self.lst_item_func.append(self.plot_item_func)
+            # self.graphicsView.plot(x, y, pen=pen, name=function_text) 
+            graph_item = self.graphicsView.plot(x, y, pen=pen, name=function_text)
+            self.graphItems.append(graph_item)
+
 
         except Exception as e:
             QMessageBox.warning(self, "Ошибка", f"Ошибка в вычислении функции: {e}")
