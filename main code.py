@@ -17,8 +17,7 @@ from PyQt5.QtCore import QTimer
 # from PyQt5.QtMultimediaWidgets import QVideoWidget
 # from PyQt5.QtWidgets import QPushButton
 # from PyQt5.QtCore import QUrl
-# from PyQt5.QtWidgets import QMainWindow, QApplication, QSlider
-# from Ui_interface import Ui_MainWindow
+
 
 
 
@@ -44,11 +43,10 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
         self.graphicsView.setBackground((255, 255,  255))
         self.marker = 'o'
         self.color = 'b'
-        # self.lst_item_func = []
         self.line_style = QtCore.Qt.SolidLine
         self.graphicsView.showGrid(x=True, y=True, alpha = 1)
         self.graphicsView.addLegend()
-        self.plot_item_func = []
+        # self.plot_item_func = []
         self.graphItems = []    
         
         self.pushButton_4.clicked.connect(lambda: self.open_new_transaction_window())
@@ -130,10 +128,7 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
     #         self.mediaPlayer.play()
         
 
-    # def clear(self):
-    #     if self.graphItems:
-    #         last_graph = self.graphItems.pop()
-    #         self.graphicsView.removeItem(last_graph)
+
         
     def clear(self):
         if self.graphItems:
@@ -144,19 +139,8 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
     
     def clear_all(self):
         self.graphicsView.clear()
-        self.lst_item_func.clear()
+        # self.lst_item_func.clear()
 
-
-
-    def set_crosshair(self):
-        self.marker = 'crosshair'
-    def set_square(self):
-        self.marker = 's'
-    def set_triangle(self):
-        self.marker = 't'   
-    def set_circle(self):
-        self.marker = 'o'  
-    
 
 
 
@@ -204,6 +188,16 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
     def plot_the_chart(self):
         function_text = self.lineEdit.text()
         try:
+            xmin = float(self.lineEdit_2.text())
+            xmax = float(self.lineEdit_3.text())
+        except ValueError:
+            QMessageBox.warning(self, "Ошибка", "Неверно заданы Xmin или Xmax.")
+            return
+
+        if not function_text.strip():
+            QMessageBox.warning(self, "Ошибка", "Поле ввода функции пусто.")
+            return
+        try:
             self.userFunction = eval(f"lambda x: {function_text}", {"np": np})
             self.currentXRange = (float(self.lineEdit_2.text()), float(self.lineEdit_3.text()))
             self.updateGraph()  
@@ -213,33 +207,24 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
     def updateGraph(self):
         if self.userFunction:
             xmin, xmax = self.currentXRange
-            x = np.linspace(xmin, xmax, 1000)  # Или другое количество точек в зависимости от необходимости
+            x = np.linspace(xmin, xmax, 1000) 
             y = self.userFunction(x)
 
-            # Очищаем предыдущий график
             for item in self.graphItems:
                 self.graphicsView.removeItem(item)
             self.graphItems.clear()
 
-            # Создаем и отрисовываем график линии
             pen = pg.mkPen(color=self.selectedColor, style=self.line_style, width=2)
             lineItem = self.graphicsView.plot(x, y, pen=pen)
             self.graphItems.append(lineItem)
 
-            # Добавляем маркеры если их количество > 0
             marker_count = self.horizontalSlider.value()
             if marker_count > 0:
                 marker_interval = max(1, len(x) // marker_count)
                 x_markers = x[::marker_interval]
                 y_markers = y[::marker_interval]
-                # Для маркеров используем цвет self.selectedColor
                 markersItem = self.graphicsView.plot(x_markers, y_markers, pen=None, symbol=self.marker, symbolSize=5, symbolBrush='b')
                 self.graphItems.append(markersItem)
-
-
-
-
-
 
 
     

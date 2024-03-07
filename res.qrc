@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="newPrefix">
+    <file>background.gif</file>
     <file>322557044025211.png</file>
     <file>circle_PNG4.png</file>
     <file>orange.png</file>
