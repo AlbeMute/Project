@@ -17,8 +17,8 @@ class Ui_MainWindow(object):
         MainWindow.resize(1060, 837)
         MainWindow.setMinimumSize(QtCore.QSize(1060, 837))
         MainWindow.setMaximumSize(QtCore.QSize(1920, 1080))
-        MainWindow.setStyleSheet("background: #702DCE; \n"
-"background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 rgba(213,128,255), stop:0.427447 rgb(136,77,255), stop:1 rgba(102,230,255))\n"
+        MainWindow.setStyleSheet("\n"
+"  background-color:          rgb(5, 16, 32)\n"
 "")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -29,6 +29,7 @@ class Ui_MainWindow(object):
         self.frame = QtWidgets.QFrame(self.centralwidget)
         self.frame.setMinimumSize(QtCore.QSize(250, 0))
         self.frame.setMaximumSize(QtCore.QSize(250, 16777215))
+        self.frame.setStyleSheet("background-color: rgb(3, 10, 20)")
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
@@ -48,8 +49,8 @@ class Ui_MainWindow(object):
         self.pushButton = QtWidgets.QPushButton(self.frame_3)
         self.pushButton.setMinimumSize(QtCore.QSize(50, 30))
         self.pushButton.setStyleSheet("QPushButton{\n"
-"    color: rgba(49, 57, 77);\n"
-"     background-color:rgba(34, 34, 34);\n"
+"    color: rgb(49, 57, 77);\n"
+"     background-color:rgb(34, 34, 34);\n"
 "     border: 1px solid rgba(255,255,255,40);\n"
 "     border-radius:10px;\n"
 "width: 15;\n"
@@ -64,8 +65,8 @@ class Ui_MainWindow(object):
         self.pushButton_2 = QtWidgets.QPushButton(self.frame_3)
         self.pushButton_2.setMinimumSize(QtCore.QSize(50, 30))
         self.pushButton_2.setStyleSheet("QPushButton{\n"
-"    color: rgba(255, 255, 255);\n"
-"     background-color:rgba(193, 193, 193);\n"
+"    color: rgb(255, 255, 255);\n"
+"     background-color:rgb(193, 193, 193);\n"
 "     border: 1px solid rgba(255,255,255,40);\n"
 "     border-radius:10px;\n"
 "width: 15;\n"
@@ -80,8 +81,8 @@ class Ui_MainWindow(object):
         self.pushButton_3 = QtWidgets.QPushButton(self.frame_3)
         self.pushButton_3.setMinimumSize(QtCore.QSize(50, 30))
         self.pushButton_3.setStyleSheet("QPushButton{\n"
-"    color: rgba(49, 57, 77);\n"
-"     background-color:rgba(135, 0, 135);\n"
+"    color: rgb(49, 57, 77);\n"
+"     background-color: rgb(5, 16, 32);\n"
 "     border: 1px solid rgba(255,255,255,40);\n"
 "     border-radius:10px;\n"
 "width: 15;\n"
@@ -104,6 +105,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.frame_8 = QtWidgets.QFrame(self.frame_4)
         self.frame_8.setMaximumSize(QtCore.QSize(16777215, 50))
+        self.frame_8.setStyleSheet("background-color:    rgb(7, 22, 45)")
         self.frame_8.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_8.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_8.setObjectName("frame_8")
@@ -116,7 +118,7 @@ class Ui_MainWindow(object):
         font.setPointSize(26)
         self.label.setFont(font)
         self.label.setMouseTracking(False)
-        self.label.setStyleSheet("QLabel{color: rgb(85, 0, 127)}")
+        self.label.setStyleSheet("QLabel{color: rgb(33, 112, 255)}")
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
         self.horizontalLayout_4.addWidget(self.label)
@@ -143,8 +145,8 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.pushButton_4.setFont(font)
         self.pushButton_4.setStyleSheet("QPushButton{\n"
-"    color: rgba(49, 57, 77);\n"
-"     background-color:rgba(42, 189, 184);\n"
+"    color: rgb(25, 92, 184);\n"
+"     background-color:          rgb(5, 16, 32);\n"
 "     border: 1px solid rgba(255,255,255,40);\n"
 "     border-radius:15px;\n"
 "width: 40;\n"
@@ -159,9 +161,11 @@ class Ui_MainWindow(object):
         self.frame_7.setMinimumSize(QtCore.QSize(214, 50))
         self.frame_7.setMaximumSize(QtCore.QSize(214, 50))
         self.frame_7.setLayoutDirection(QtCore.Qt.RightToLeft)
-        self.frame_7.setStyleSheet("QPushButton{\n"
-"    color: rgba(49, 57, 77);\n"
-"    background-color: rgb(170, 170, 255);\n"
+        self.frame_7.setStyleSheet("QFrame{background-color: rgb(5, 16, 33)}\n"
+"\n"
+"QPushButton{\n"
+"    color:rgb(33, 112, 255);\n"
+"    background-color: rgb(7, 32, 65);\n"
 "     border: 1px solid rgba(255,255,255,40);\n"
 "     border-radius:10px;\n"
 "width: 15;\n"
@@ -218,8 +222,8 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.pushButton_8.setFont(font)
         self.pushButton_8.setStyleSheet("QPushButton{\n"
-"    color: rgba(49, 57, 77);\n"
-"    background-color: rgb(170, 170, 255);\n"
+"    color:rgb(33, 112, 255);\n"
+"    background-color: rgb(7, 32, 65);\n"
 "     border: 1px solid rgba(255,255,255,40);\n"
 "     border-radius:10px;\n"
 "width: 15;\n"
@@ -235,9 +239,10 @@ class Ui_MainWindow(object):
         self.frame_9.setMinimumSize(QtCore.QSize(214, 50))
         self.frame_9.setMaximumSize(QtCore.QSize(214, 50))
         self.frame_9.setLayoutDirection(QtCore.Qt.RightToLeft)
-        self.frame_9.setStyleSheet("QPushButton{\n"
-"    color: rgba(49, 57, 77);\n"
-"    background-color: rgb(170, 170, 255);\n"
+        self.frame_9.setStyleSheet("QFrame{background-color: rgb(5, 16, 33)}\n"
+"QPushButton{\n"
+"    color:rgb(33, 112, 255);\n"
+"    background-color: rgb(7, 32, 65);\n"
 "     border: 1px solid rgba(255,255,255,40);\n"
 "     border-radius:10px;\n"
 "width: 15;\n"
@@ -245,7 +250,8 @@ class Ui_MainWindow(object):
 "}\n"
 "QPushButton:pressed{\n"
 "background-color:rgba(255,255,255,70);\n"
-"}")
+"}\n"
+"")
         self.frame_9.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_9.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_9.setObjectName("frame_9")
@@ -293,6 +299,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.addWidget(self.frame_9)
         self.frame_10 = QtWidgets.QFrame(self.frame_6)
         self.frame_10.setMinimumSize(QtCore.QSize(0, 40))
+        self.frame_10.setStyleSheet("background-color: rgb(5, 16, 33);")
         self.frame_10.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_10.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_10.setObjectName("frame_10")
@@ -305,8 +312,8 @@ class Ui_MainWindow(object):
         font.setPointSize(16)
         self.label_2.setFont(font)
         self.label_2.setStyleSheet("QLabel{\n"
-"    color: rgba(49, 57, 77);\n"
-"     background-color:rgba(42, 189, 184);\n"
+"    color: rgb(25, 92, 184);\n"
+"     background-color:rgb(5, 16, 32);\n"
 "     border: 1px solid rgba(255,255,255,40);\n"
 "     border-radius:15px;\n"
 "width: 40;\n"
@@ -323,8 +330,8 @@ class Ui_MainWindow(object):
         font.setPointSize(16)
         self.label_3.setFont(font)
         self.label_3.setStyleSheet("QLabel{\n"
-"    color: rgba(49, 57, 77);\n"
-"     background-color:rgba(42, 189, 184);\n"
+"    color: rgb(25, 92, 184);\n"
+"     background-color:rgb(5, 16, 32);\n"
 "     border: 1px solid rgba(255,255,255,40);\n"
 "     border-radius:15px;\n"
 "width: 40;\n"
@@ -338,14 +345,16 @@ class Ui_MainWindow(object):
         self.lineEdit_2.setMinimumSize(QtCore.QSize(0, 30))
         self.lineEdit_2.setMaximumSize(QtCore.QSize(80, 16777215))
         self.lineEdit_2.setStyleSheet("font: 12pt \"Samyak Malayalam\";\n"
-"color: rgb(0, 0, 0);")
+"color: rgb(33, 112, 255);\n"
+"background-color: rgb(7, 32, 65);")
         self.lineEdit_2.setObjectName("lineEdit_2")
         self.gridLayout.addWidget(self.lineEdit_2, 1, 0, 1, 1)
         self.lineEdit_3 = QtWidgets.QLineEdit(self.frame_10)
         self.lineEdit_3.setMinimumSize(QtCore.QSize(0, 30))
         self.lineEdit_3.setMaximumSize(QtCore.QSize(80, 16777215))
         self.lineEdit_3.setStyleSheet("font: 12pt \"Samyak Malayalam\";\n"
-"color: rgb(0, 0, 0);")
+"color: rgb(33, 112, 255);\n"
+"background-color: rgb(7, 32, 65);")
         self.lineEdit_3.setObjectName("lineEdit_3")
         self.gridLayout.addWidget(self.lineEdit_3, 1, 2, 1, 1)
         self.verticalLayout_4.addWidget(self.frame_10)
@@ -374,8 +383,8 @@ class Ui_MainWindow(object):
         self.pushButton_14.setFont(font)
         self.pushButton_14.setStyleSheet("\n"
 "QPushButton{\n"
-"    color: rgba(85, 0, 127);\n"
-"     background-color:rgba(85, 85, 127);\n"
+"    color:rgb(33, 112, 255);\n"
+"     background-color: rgb(7, 32, 65);\n"
 "     border: 1px solid rgba(255,255,255,40);\n"
 "     border-radius:10px;\n"
 "width: 40;\n"
@@ -396,8 +405,8 @@ class Ui_MainWindow(object):
         font.setWeight(50)
         self.pushButton_15.setFont(font)
         self.pushButton_15.setStyleSheet("QPushButton{\n"
-"    color: rgba(80, 0, 127);\n"
-"     background-color:rgba(85, 85, 127);\n"
+"    color: rgb(33, 112, 255);\n"
+"     background-color: rgb(7, 32, 65);\n"
 "     border: 1px solid rgba(255,255,255,40);\n"
 "     border-radius:10px;\n"
 "width: 30;\n"
@@ -417,8 +426,11 @@ class Ui_MainWindow(object):
         font.setItalic(False)
         font.setWeight(50)
         self.pushButton_9.setFont(font)
-        self.pushButton_9.setStyleSheet("color:rgb(85, 0, 127)\n"
-"")
+        self.pushButton_9.setStyleSheet("\n"
+"\n"
+"QPushButton{background-color: rgb(5, 16, 33);\n"
+"\n"
+"color:rgb(33, 112, 255)}")
         self.pushButton_9.setObjectName("pushButton_9")
         self.gridLayout_2.addWidget(self.pushButton_9, 1, 1, 1, 2)
         self.verticalLayout_4.addWidget(self.frame_12)
@@ -435,6 +447,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.setObjectName("verticalLayout")
         self.graphicsView = PlotWidget(self.frame_2)
         self.graphicsView.setMaximumSize(QtCore.QSize(10000, 10000))
+        self.graphicsView.setStyleSheet("")
         self.graphicsView.setObjectName("graphicsView")
         self.verticalLayout.addWidget(self.graphicsView)
         self.frame_5 = QtWidgets.QFrame(self.frame_2)
@@ -447,9 +460,9 @@ class Ui_MainWindow(object):
         self.lineEdit.setGeometry(QtCore.QRect(60, 10, 600, 45))
         self.lineEdit.setMinimumSize(QtCore.QSize(600, 45))
         self.lineEdit.setMaximumSize(QtCore.QSize(210, 45))
-        self.lineEdit.setStyleSheet("background-color: rgb(0, 170, 255);\n"
+        self.lineEdit.setStyleSheet("background-color: rgb(3, 10, 20);\n"
 "font: 12pt \"Samyak Malayalam\";\n"
-"color: rgb(0, 0, 0);\n"
+"color: rgb(33, 112, 255);\n"
 "")
         self.lineEdit.setText("")
         self.lineEdit.setObjectName("lineEdit")
@@ -461,21 +474,34 @@ class Ui_MainWindow(object):
         font.setFamily("Suranna")
         font.setPointSize(16)
         self.label_5.setFont(font)
-        self.label_5.setStyleSheet("color:rgb(0, 0, 0);\n"
-"background-color: rgb(0, 170, 255);\n"
+        self.label_5.setStyleSheet("color: rgb(33, 112, 255);\n"
+"background-color: rgb(3, 10, 20)\n"
 "")
         self.label_5.setAlignment(QtCore.Qt.AlignCenter)
         self.label_5.setObjectName("label_5")
         self.label_6 = QtWidgets.QLabel(self.frame_5)
-        self.label_6.setGeometry(QtCore.QRect(0, 210, 361, 51))
+        self.label_6.setGeometry(QtCore.QRect(10, 200, 361, 51))
         font = QtGui.QFont()
         font.setFamily("DejaVu Sans")
         font.setPointSize(14)
         font.setBold(True)
         font.setWeight(75)
         self.label_6.setFont(font)
-        self.label_6.setStyleSheet("color: rgb(0, 0, 0)")
+        self.label_6.setStyleSheet("color: rgb(33, 112, 255);")
         self.label_6.setObjectName("label_6")
+        self.saveButton = QtWidgets.QPushButton(self.frame_5)
+        self.saveButton.setGeometry(QtCore.QRect(670, 20, 71, 28))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        font.setItalic(True)
+        self.saveButton.setFont(font)
+        self.saveButton.setStyleSheet("QPushButton{background-color:  rgb(33, 112, 255)}\n"
+"\n"
+"QPushButton:pressed{\n"
+"    font: 25 italic 14pt \"Ubuntu\";\n"
+"background-color:rgba(255,255,255,70);\n"
+"}")
+        self.saveButton.setObjectName("saveButton")
         self.verticalLayout.addWidget(self.frame_5)
         self.horizontalLayout.addWidget(self.frame_2)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -499,5 +525,6 @@ class Ui_MainWindow(object):
         self.pushButton_9.setText(_translate("MainWindow", "Plot the chart"))
         self.label_5.setText(_translate("MainWindow", "f(x)="))
         self.label_6.setText(_translate("MainWindow", "(c)  Stanislaw Maksimov, 2024"))
+        self.saveButton.setText(_translate("MainWindow", "Save"))
 from pyqtgraph import PlotWidget
 import res_rc

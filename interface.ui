@@ -26,8 +26,8 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background: #702DCE; 
-background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 rgba(213,128,255), stop:0.427447 rgb(136,77,255), stop:1 rgba(102,230,255))
+   <string notr="true">
+  background-color:          rgb(5, 16, 32)
 </string>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -60,6 +60,9 @@ background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 rgb
         <width>250</width>
         <height>16777215</height>
        </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(3, 10, 20)</string>
       </property>
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
@@ -123,8 +126,8 @@ background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 rgb
             </property>
             <property name="styleSheet">
              <string notr="true">QPushButton{
-	color: rgba(49, 57, 77);
-     background-color:rgba(34, 34, 34);
+	color: rgb(49, 57, 77);
+     background-color:rgb(34, 34, 34);
      border: 1px solid rgba(255,255,255,40);
      border-radius:10px;
 width: 15;
@@ -149,8 +152,8 @@ background-color:rgba(255,255,255,70);
             </property>
             <property name="styleSheet">
              <string notr="true">QPushButton{
-	color: rgba(255, 255, 255);
-     background-color:rgba(193, 193, 193);
+	color: rgb(255, 255, 255);
+     background-color:rgb(193, 193, 193);
      border: 1px solid rgba(255,255,255,40);
      border-radius:10px;
 width: 15;
@@ -175,8 +178,8 @@ background-color:rgba(255,255,255,70);
             </property>
             <property name="styleSheet">
              <string notr="true">QPushButton{
-	color: rgba(49, 57, 77);
-     background-color:rgba(135, 0, 135);
+	color: rgb(49, 57, 77);
+     background-color: rgb(5, 16, 32);
      border: 1px solid rgba(255,255,255,40);
      border-radius:10px;
 width: 15;
@@ -226,6 +229,9 @@ background-color:rgba(255,255,255,70);
               <height>50</height>
              </size>
             </property>
+            <property name="styleSheet">
+             <string notr="true">background-color:    rgb(7, 22, 45)</string>
+            </property>
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>
             </property>
@@ -251,7 +257,7 @@ background-color:rgba(255,255,255,70);
                 <bool>false</bool>
                </property>
                <property name="styleSheet">
-                <string notr="true">QLabel{color: rgb(85, 0, 127)}</string>
+                <string notr="true">QLabel{color: rgb(33, 112, 255)}</string>
                </property>
                <property name="text">
                 <string>Panel</string>
@@ -308,8 +314,8 @@ background-color:rgba(255,255,255,70);
                </property>
                <property name="styleSheet">
                 <string notr="true">QPushButton{
-	color: rgba(49, 57, 77);
-     background-color:rgba(42, 189, 184);
+	color: rgb(25, 92, 184);
+     background-color:          rgb(5, 16, 32);
      border: 1px solid rgba(255,255,255,40);
      border-radius:15px;
 width: 40;
@@ -342,9 +348,11 @@ background-color:rgba(255,255,255,70);
                 <enum>Qt::RightToLeft</enum>
                </property>
                <property name="styleSheet">
-                <string notr="true">QPushButton{
-	color: rgba(49, 57, 77);
-	background-color: rgb(170, 170, 255);
+                <string notr="true">QFrame{background-color: rgb(5, 16, 33)}
+
+QPushButton{
+	color:rgb(33, 112, 255);
+	background-color: rgb(7, 32, 65);
      border: 1px solid rgba(255,255,255,40);
      border-radius:10px;
 width: 15;
@@ -466,8 +474,8 @@ background-color:rgba(255,255,255,70);
                   </property>
                   <property name="styleSheet">
                    <string notr="true">QPushButton{
-	color: rgba(49, 57, 77);
-	background-color: rgb(170, 170, 255);
+	color:rgb(33, 112, 255);
+	background-color: rgb(7, 32, 65);
      border: 1px solid rgba(255,255,255,40);
      border-radius:10px;
 width: 15;
@@ -503,9 +511,10 @@ background-color:rgba(255,255,255,70);
                 <enum>Qt::RightToLeft</enum>
                </property>
                <property name="styleSheet">
-                <string notr="true">QPushButton{
-	color: rgba(49, 57, 77);
-	background-color: rgb(170, 170, 255);
+                <string notr="true">QFrame{background-color: rgb(5, 16, 33)}
+QPushButton{
+	color:rgb(33, 112, 255);
+	background-color: rgb(7, 32, 65);
      border: 1px solid rgba(255,255,255,40);
      border-radius:10px;
 width: 15;
@@ -513,7 +522,8 @@ height: 15;
 }
 QPushButton:pressed{
 background-color:rgba(255,255,255,70);
-}</string>
+}
+</string>
                </property>
                <property name="frameShape">
                 <enum>QFrame::StyledPanel</enum>
@@ -641,6 +651,9 @@ background-color:rgba(255,255,255,70);
                  <height>40</height>
                 </size>
                </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(5, 16, 33);</string>
+               </property>
                <property name="frameShape">
                 <enum>QFrame::StyledPanel</enum>
                </property>
@@ -664,8 +677,8 @@ background-color:rgba(255,255,255,70);
                   </property>
                   <property name="styleSheet">
                    <string notr="true">QLabel{
-	color: rgba(49, 57, 77);
-     background-color:rgba(42, 189, 184);
+	color: rgb(25, 92, 184);
+     background-color:rgb(5, 16, 32);
      border: 1px solid rgba(255,255,255,40);
      border-radius:15px;
 width: 40;
@@ -697,8 +710,8 @@ height: 40;
                   </property>
                   <property name="styleSheet">
                    <string notr="true">QLabel{
-	color: rgba(49, 57, 77);
-     background-color:rgba(42, 189, 184);
+	color: rgb(25, 92, 184);
+     background-color:rgb(5, 16, 32);
      border: 1px solid rgba(255,255,255,40);
      border-radius:15px;
 width: 40;
@@ -730,7 +743,8 @@ height: 40;
                   </property>
                   <property name="styleSheet">
                    <string notr="true">font: 12pt &quot;Samyak Malayalam&quot;;
-color: rgb(0, 0, 0);</string>
+color: rgb(33, 112, 255);
+background-color: rgb(7, 32, 65);</string>
                   </property>
                  </widget>
                 </item>
@@ -750,7 +764,8 @@ color: rgb(0, 0, 0);</string>
                   </property>
                   <property name="styleSheet">
                    <string notr="true">font: 12pt &quot;Samyak Malayalam&quot;;
-color: rgb(0, 0, 0);</string>
+color: rgb(33, 112, 255);
+background-color: rgb(7, 32, 65);</string>
                   </property>
                  </widget>
                 </item>
@@ -815,8 +830,8 @@ color: rgb(0, 0, 0);</string>
                   <property name="styleSheet">
                    <string notr="true">
 QPushButton{
-	color: rgba(85, 0, 127);
-     background-color:rgba(85, 85, 127);
+	color:rgb(33, 112, 255);
+     background-color: rgb(7, 32, 65);
      border: 1px solid rgba(255,255,255,40);
      border-radius:10px;
 width: 40;
@@ -850,8 +865,8 @@ background-color:rgba(255,255,255,70);
                   </property>
                   <property name="styleSheet">
                    <string notr="true">QPushButton{
-	color: rgba(80, 0, 127);
-     background-color:rgba(85, 85, 127);
+	color: rgb(33, 112, 255);
+     background-color: rgb(7, 32, 65);
      border: 1px solid rgba(255,255,255,40);
      border-radius:10px;
 width: 30;
@@ -884,8 +899,11 @@ background-color:rgba(255,255,255,70);
                    </font>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">color:rgb(85, 0, 127)
-</string>
+                   <string notr="true">
+
+QPushButton{background-color: rgb(5, 16, 33);
+
+color:rgb(33, 112, 255)}</string>
                   </property>
                   <property name="text">
                    <string>Plot the chart</string>
@@ -936,6 +954,9 @@ background-color:rgba(255,255,255,70);
            <height>10000</height>
           </size>
          </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
         </widget>
        </item>
        <item>
@@ -980,9 +1001,9 @@ background-color:rgba(255,255,255,70);
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: rgb(0, 170, 255);
+           <string notr="true">background-color: rgb(3, 10, 20);
 font: 12pt &quot;Samyak Malayalam&quot;;
-color: rgb(0, 0, 0);
+color: rgb(33, 112, 255);
 </string>
           </property>
           <property name="text">
@@ -1017,8 +1038,8 @@ color: rgb(0, 0, 0);
            </font>
           </property>
           <property name="styleSheet">
-           <string notr="true">color:rgb(0, 0, 0);
-background-color: rgb(0, 170, 255);
+           <string notr="true">color: rgb(33, 112, 255);
+background-color: rgb(3, 10, 20)
 </string>
           </property>
           <property name="text">
@@ -1031,8 +1052,8 @@ background-color: rgb(0, 170, 255);
          <widget class="QLabel" name="label_6">
           <property name="geometry">
            <rect>
-            <x>0</x>
-            <y>210</y>
+            <x>10</x>
+            <y>200</y>
             <width>361</width>
             <height>51</height>
            </rect>
@@ -1046,10 +1067,37 @@ background-color: rgb(0, 170, 255);
            </font>
           </property>
           <property name="styleSheet">
-           <string notr="true">color: rgb(0, 0, 0)</string>
+           <string notr="true">color: rgb(33, 112, 255);</string>
           </property>
           <property name="text">
            <string>(c)  Stanislaw Maksimov, 2024</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="saveButton">
+          <property name="geometry">
+           <rect>
+            <x>670</x>
+            <y>20</y>
+            <width>71</width>
+            <height>28</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton{background-color:  rgb(33, 112, 255)}
+
+QPushButton:pressed{
+	font: 25 italic 14pt &quot;Ubuntu&quot;;
+background-color:rgba(255,255,255,70);
+}</string>
+          </property>
+          <property name="text">
+           <string>Save</string>
           </property>
          </widget>
         </widget>

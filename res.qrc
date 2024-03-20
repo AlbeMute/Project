@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="newPrefix">
+    <file>moon.jpg</file>
+    <file>images/ier.jpg</file>
+    <file>ier.jpg</file>
     <file>background.gif</file>
     <file>322557044025211.png</file>
     <file>circle_PNG4.png</file>
