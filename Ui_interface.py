@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1060, 837)
+        MainWindow.resize(1114, 837)
         MainWindow.setMinimumSize(QtCore.QSize(1060, 837))
         MainWindow.setMaximumSize(QtCore.QSize(1920, 1080))
         MainWindow.setStyleSheet("\n"
@@ -362,6 +362,25 @@ class Ui_MainWindow(object):
         self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
         self.horizontalSlider.setObjectName("horizontalSlider")
         self.verticalLayout_4.addWidget(self.horizontalSlider)
+        self.pushButton_16 = QtWidgets.QPushButton(self.frame_6)
+        font = QtGui.QFont()
+        font.setFamily("Sahadeva")
+        font.setPointSize(20)
+        font.setItalic(False)
+        self.pushButton_16.setFont(font)
+        self.pushButton_16.setStyleSheet("QPushButton{\n"
+"    color: rgb(33, 112, 255);\n"
+"     background-color: rgb(7, 32, 65);\n"
+"     border: 1px solid rgba(255,255,255,40);\n"
+"     border-radius:10px;\n"
+"width: 30;\n"
+"height: 30;\n"
+"}\n"
+"QPushButton:pressed{\n"
+"background-color:rgba(255,255,255,70);\n"
+"}")
+        self.pushButton_16.setObjectName("pushButton_16")
+        self.verticalLayout_4.addWidget(self.pushButton_16)
         spacerItem = QtWidgets.QSpacerItem(10, 10, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_4.addItem(spacerItem)
         self.frame_12 = QtWidgets.QFrame(self.frame_6)
@@ -502,6 +521,23 @@ class Ui_MainWindow(object):
 "background-color:rgba(255,255,255,70);\n"
 "}")
         self.saveButton.setObjectName("saveButton")
+        self.tableWidget = QtWidgets.QTableWidget(self.frame_5)
+        self.tableWidget.setGeometry(QtCore.QRect(10, 60, 731, 151))
+        self.tableWidget.setStyleSheet("QTableWidget {\n"
+"            background-color: rgb(7, 32, 65); /* фон таблицы */\n"
+"            color: rgb(33, 112, 255);         /* цвет текста */\n"
+"            font-size: 14pt;                  /* размер шрифта */\n"
+"            font-family: \'Sahadeva\';          /* семейство шрифта */\n"
+"        }\n"
+"QTableWidget QHeaderView::section {\n"
+"            background-color: rgb(33, 112, 255); /* фон заголовков */\n"
+"            color: rgb(23, 23, 23);         /* цвет текста заголовков */\n"
+"            font-size: 16pt;                  /* размер шрифта заголовков */\n"
+"            font-family: \'Sahadeva\';          /* семейство шрифта заголовков */\n"
+"        }")
+        self.tableWidget.setObjectName("tableWidget")
+        self.tableWidget.setColumnCount(0)
+        self.tableWidget.setRowCount(0)
         self.verticalLayout.addWidget(self.frame_5)
         self.horizontalLayout.addWidget(self.frame_2)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -520,6 +556,7 @@ class Ui_MainWindow(object):
         self.pushButton_8.setText(_translate("MainWindow", "―"))
         self.label_2.setText(_translate("MainWindow", "Xmin:"))
         self.label_3.setText(_translate("MainWindow", "Xmax:"))
+        self.pushButton_16.setText(_translate("MainWindow", "derivative"))
         self.pushButton_14.setText(_translate("MainWindow", "clear"))
         self.pushButton_15.setText(_translate("MainWindow", "clear all"))
         self.pushButton_9.setText(_translate("MainWindow", "Plot the chart"))

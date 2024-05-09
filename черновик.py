@@ -218,3 +218,20 @@ from PyQt5.QtCore import QUrl
             xmax = float(self.lineEdit_3.text())
         else:
             QMessageBox.warning(self, "Ошибка", "Неверно заданы Xmin или Xmax.")
+
+
+#Table
+def add_function(self, function_text):
+        x = symbols('x')
+        function = eval("lambda x: " + function_text, {"np": np, "__builtins__": None}, {})
+        function_sympy = function(x)
+        derivative = diff(function_sympy, x)
+        derivative_np = lambdify(x, derivative, 'numpy')
+        
+        
+        current_row_count = self.tableWidget.rowCount()
+        self.tableWidget.insertRow(current_row_count)
+        self.tableWidget.setItem(current_row_count, 0, QTableWidgetItem(function_text))
+
+        derivative_text = str(derivative)  
+        self.tableWidget.setItem(current_row_count, 1, QTableWidgetItem(derivative_text))

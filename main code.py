@@ -10,10 +10,11 @@ import pyqtgraph as pg
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QIcon, QMovie
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QLabel, QFileDialog
+from PyQt5.QtWidgets import QLabel, QFileDialog, QTableWidget, QTableWidgetItem
 from PyQt5.QtCore import QTimer
-import pyqtgraph.exporters
-
+from sympy import symbols, diff, lambdify, sympify, solve
+import sympy as sp
+from sympy import symbols, diff, lambdify, sympify, sin, cos, tan, exp, log  # Import specific functions
 
 
 class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
@@ -25,7 +26,8 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
         self.setWindowIcon(QIcon('ico.png'))
         self.data = None
         self.setWindowTitle('AniGraphix')
-            
+        
+        self.graphDataTable = GraphDataTable(self.tableWidget)    
 
         self.PLotWidget = pg.PlotWidget()
         self.graphicsView.setBackground((32, 29,  29))
@@ -45,6 +47,7 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
         self.pushButton_14.clicked.connect(lambda: self.clear())
         self.saveButton.clicked.connect(lambda: self.save())
         self.pushButton_15.clicked.connect(lambda: self.clear_all())
+        self.pushButton_16.clicked.connect(lambda: self.derivatives())
 
         self.pushButton_10.clicked.connect(lambda: self.set_crosshair())
         self.pushButton_11.clicked.connect(lambda: self.set_square())
@@ -62,7 +65,58 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
         
     def background_color_w(self):
         self.graphicsView.setBackground((187, 174, 203))
-                
+
+    # Код производной
+    def derivatives(self):
+        function_text = self.lineEdit.text()
+
+        try:
+            xmin = float(self.lineEdit_2.text())
+            xmax = float(self.lineEdit_3.text())
+        except ValueError:
+            self.showCustomMessageBox("Ошибка", "Неверно заданы Xmin или Xmax.")
+            return
+
+        if not function_text.strip():
+            self.showCustomMessageBox("Ошибка", "Поле ввода функции пусто.")
+            return
+    
+        np_to_sympy = {
+            "np.sin": "sin",
+            "np.cos": "cos",
+            "np.tan": "tan",
+            "np.cot": "cot",
+            "np.sec": "sec",
+            "np.csc": "csc",
+            "np.exp": "exp",
+            "np.log": "log",
+            "np.sqrt": "sqrt",
+    }
+
+    # Replace np function calls with sympy function names
+        for np_func, sympy_func in np_to_sympy.items():
+            function_text = function_text.replace(np_func, sympy_func)
+        
+        x_symbol = symbols('x')
+        try:
+            local_dict = {
+                "sin": sin, "cos": cos, "tan": tan, "cot": lambda x: 1 / tan(x),
+                "sec": lambda x: 1 / cos(x), "csc": lambda x: 1 / sin(x),
+                "exp": exp, "log": log, "sqrt": sp.sqrt, "x": x_symbol,                
+            }
+            sympy_function = sympify(function_text, locals=local_dict)
+            derivative = diff(sympy_function, x_symbol)
+            derivative_np = lambdify(x_symbol, derivative, 'numpy')
+            x = np.linspace(xmin, xmax, 1000)
+            y = derivative_np(x)
+
+            pen = pg.mkPen(color=self.selectedColor, style=self.line_style, width=2)
+            graph_item = self.graphicsView.plot(x, y, pen=pen, name=f"f'(x): {function_text}")
+            self.graphItems.append(graph_item)
+        except Exception as e:
+            self.showCustomMessageBox("Ошибка", f"Ошибка в вычислении производной: {e}")
+            return
+
     #anime-gif
     def background_anime_gif(self):
         self.labelForGif = QLabel(self)
@@ -139,7 +193,9 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
             pen = pg.mkPen(color=self.selectedColor, style=self.line_style, width=2)
             graph_item = self.graphicsView.plot(x, y, pen=pen, name=function_text)
             self.graphItems.append(graph_item)
-
+            
+            self.graphDataTable.add_function(function_text)
+        
         except Exception as e:
             self.showCustomMessageBox("Ошибка", f"Ошибка в вычислении функции: {e}")
             return 
@@ -179,7 +235,8 @@ class TransactionWindow(QDialog, Ui_Dialog):
         self.pushButton_20.clicked.connect(lambda: self.emit_color('orange'))
         self.pushButton_19.clicked.connect(lambda: self.emit_color('dark_blue'))
         self.pushButton_18.clicked.connect(lambda: self.emit_color('pink'))
-    
+        self.setWindowTitle('Colors')
+
     def emit_color(self, color_name):
         color_map = {
             "red": (255, 0, 0),
@@ -192,6 +249,53 @@ class TransactionWindow(QDialog, Ui_Dialog):
             'pink' : (255, 192, 203)
         }
         self.colorChanged.emit(color_map[color_name])
+
+class GraphDataTable:
+    def __init__(self, tableWidget):
+        self.tableWidget = tableWidget
+        self.setup_table()
+
+    def setup_table(self):
+        self.tableWidget.setColumnCount(3)  
+        self.tableWidget.setHorizontalHeaderLabels(['Function', 'Derivative', 'Intersections']) 
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+
+    def add_function(self, function_text):
+        x = symbols('x')
+        try:
+            is_np_function = "np." in function_text
+            function_text_sympy = function_text.replace("np.", "")
+            function_sympy = sympify(function_text_sympy)
+
+            # Вычисляем производную
+            derivative = diff(function_sympy, x)
+            derivative_text = str(derivative)
+
+            # Преобразуем функцию и производную в функции lambdify
+            function = lambdify(x, function_sympy, 'numpy')
+            derivative_np = lambdify(x, derivative, 'numpy')
+
+            # Находим точки пересечения с осями координат
+            if not is_np_function:
+                intersections = []
+                roots = solve(function_sympy, x)
+                for root in roots:
+                    intersections.append((root, function(root)))
+            else:
+                intersections = None
+            
+            # Вставляем функцию, производную и точки пересечения в таблицу
+            current_row_count = self.tableWidget.rowCount()
+            self.tableWidget.insertRow(current_row_count)
+            self.tableWidget.setItem(current_row_count, 0, QTableWidgetItem(function_text_sympy))
+            self.tableWidget.setItem(current_row_count, 1, QTableWidgetItem(derivative_text))
+            self.tableWidget.setItem(current_row_count, 2, QTableWidgetItem(str(intersections)))
+        except Exception as e:
+            error_message = f"Ошибка при обработке функции: {e}"
+            print(error_message)
+            self.tableWidget.insertRow(self.tableWidget.rowCount())
+            self.tableWidget.setItem(self.tableWidget.rowCount() - 1, 0, QTableWidgetItem(function_text))
+            self.tableWidget.setItem(self.tableWidget.rowCount() - 1, 1, QTableWidgetItem(error_message))
 
 def main():
   app = QtWidgets.QApplication(sys.argv)
