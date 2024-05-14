@@ -1,20 +1,18 @@
 import os
 import sys
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QTimer, pyqtSignal
 import pandas as pd
 import numpy as np
 import Ui_interface
 from Ui_color import Ui_Dialog
-from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import (
+    QLabel, QFileDialog, QTableWidgetItem, QHeaderView, QVBoxLayout, QDialog
+)
 import pyqtgraph as pg
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QIcon, QMovie
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QLabel, QFileDialog, QTableWidget, QTableWidgetItem
-from PyQt5.QtCore import QTimer
-from sympy import symbols, diff, lambdify, sympify, solve
 import sympy as sp
-from sympy import symbols, diff, lambdify, sympify, sin, cos, tan, exp, log  # Import specific functions
+from sympy import symbols, diff, lambdify, sympify, solve, sin, cos, tan, exp, log, sinh, cosh, tanh
 
 
 class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
@@ -85,22 +83,24 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
             "np.sin": "sin",
             "np.cos": "cos",
             "np.tan": "tan",
+            "np.sinh": "sinh",
+            "np.cosh": "cosh",
+            "np.tanh": "tanh",
             "np.cot": "cot",
             "np.sec": "sec",
             "np.csc": "csc",
             "np.exp": "exp",
             "np.log": "log",
             "np.sqrt": "sqrt",
-    }
-
-    # Replace np function calls with sympy function names
+        }   
         for np_func, sympy_func in np_to_sympy.items():
             function_text = function_text.replace(np_func, sympy_func)
         
         x_symbol = symbols('x')
         try:
             local_dict = {
-                "sin": sin, "cos": cos, "tan": tan, "cot": lambda x: 1 / tan(x),
+                "sin": sin, "cos": cos, "tan": tan, "sinh": sinh, "cosh": cosh, "tanh": tanh,
+                "cot": lambda x: 1 / tan(x),
                 "sec": lambda x: 1 / cos(x), "csc": lambda x: 1 / sin(x),
                 "exp": exp, "log": log, "sqrt": sp.sqrt, "x": x_symbol,                
             }
@@ -113,6 +113,7 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
             pen = pg.mkPen(color=self.selectedColor, style=self.line_style, width=2)
             graph_item = self.graphicsView.plot(x, y, pen=pen, name=f"f'(x): {function_text}")
             self.graphItems.append(graph_item)
+        
         except Exception as e:
             self.showCustomMessageBox("Ошибка", f"Ошибка в вычислении производной: {e}")
             return
@@ -194,7 +195,7 @@ class MainApplication(QtWidgets.QMainWindow, Ui_interface.Ui_MainWindow):
             graph_item = self.graphicsView.plot(x, y, pen=pen, name=function_text)
             self.graphItems.append(graph_item)
             
-            self.graphDataTable.add_function(function_text)
+            self.graphDataTable.add_function(function_text, xmin, xmax)
         
         except Exception as e:
             self.showCustomMessageBox("Ошибка", f"Ошибка в вычислении функции: {e}")
@@ -256,11 +257,14 @@ class GraphDataTable:
         self.setup_table()
 
     def setup_table(self):
-        self.tableWidget.setColumnCount(3)  
-        self.tableWidget.setHorizontalHeaderLabels(['Function', 'Derivative', 'Intersections']) 
+        self.tableWidget.setColumnCount(4)
+        self.tableWidget.setHorizontalHeaderLabels(['Function', 'Derivative', 'Intersections', 'Range'])
+        header = self.tableWidget.horizontalHeader() # Выравнивание столбиков таблицы
+        for col in range(self.tableWidget.columnCount()):
+            header.setSectionResizeMode(col, QHeaderView.Stretch)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
 
-    def add_function(self, function_text):
+    def add_function(self, function_text, xmin, xmax):
         x = symbols('x')
         try:
             is_np_function = "np." in function_text
@@ -283,28 +287,44 @@ class GraphDataTable:
                     intersections.append((root, function(root)))
             else:
                 intersections = None
-            
-            # Вставляем функцию, производную и точки пересечения в таблицу
+
+            # Находим экстремумы функции
+            extrema = solve(derivative, x)
+            extrema = [float(ext) for ext in extrema if xmin <= float(ext) <= xmax]
+
+            # Вычисляем значения функции в экстремумах и на границах интервала
+            critical_points = [xmin, xmax] + extrema
+            values_at_critical_points = [function(cp) for cp in critical_points]
+
+            # Находим минимальное и максимальное значения функции
+            min_value = min(values_at_critical_points)
+            max_value = max(values_at_critical_points)
+            function_range = f"[{min_value}, {max_value}]"
+
+            # Вставляем данные в таблицу
             current_row_count = self.tableWidget.rowCount()
             self.tableWidget.insertRow(current_row_count)
             self.tableWidget.setItem(current_row_count, 0, QTableWidgetItem(function_text_sympy))
             self.tableWidget.setItem(current_row_count, 1, QTableWidgetItem(derivative_text))
             self.tableWidget.setItem(current_row_count, 2, QTableWidgetItem(str(intersections)))
+            self.tableWidget.setItem(current_row_count, 3, QTableWidgetItem(function_range))
+        
         except Exception as e:
             error_message = f"Ошибка при обработке функции: {e}"
+            
             print(error_message)
             self.tableWidget.insertRow(self.tableWidget.rowCount())
             self.tableWidget.setItem(self.tableWidget.rowCount() - 1, 0, QTableWidgetItem(function_text))
             self.tableWidget.setItem(self.tableWidget.rowCount() - 1, 1, QTableWidgetItem(error_message))
 
 def main():
-  app = QtWidgets.QApplication(sys.argv)
-  window = MainApplication()
-  window.show()
-  app.exec_()
+    app = QtWidgets.QApplication(sys.argv)
+    window = MainApplication()
+    window.show()
+    app.exec_()
 
 if __name__ == '__main__':
-  main()  
+    main()
      
 
         
